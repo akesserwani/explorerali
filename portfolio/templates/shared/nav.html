@@ -1,0 +1,52 @@
+<!--Navbar-->
+<nav x-data="{ mobileMenuIsOpen: false }" @click.away="mobileMenuIsOpen = false">
+    <div class = "w-full h-[15vh] flex flex-row align-middle justify-between bg-sky-950 shadow">
+        <!--Navigation items-->
+        <div class = "w-1/2 md:w-1/3 xl:w-1/4 flex flex-row">
+            <!--Icons - hide for mobile and make hamburger menu size <md> -->
+            <div class = "hidden text-3xl text-white w-full md:flex flex-row align-middle items-center gap-10 lg:gap-12 xl:gap-14 ml-16">
+                <!--Home Icon-->
+                <a class = "active:scale-90" href="{% url 'index' %}" > 
+                    <span class="hover:text-gray-400 hover:cursor-pointer {% if request.path == '/' %} font-bold text-4xl {% endif %} ">
+                        Home
+                    </span>
+                </a>
+
+                <a class = "active:scale-90" href="{% url 'works' %}" > 
+                    <span class="hover:text-gray-400 hover:cursor-pointer {% if request.path == '/works/' %} font-bold text-4xl {% endif %}">
+                        Works
+                    </span>
+                </a>
+
+                <a class = "active:scale-90" href="{% url 'blog' %}" > 
+                    <span class="hover:text-gray-400 hover:cursor-pointer {% if request.path == '/blog/' %} font-bold text-4xl {% endif %}">
+                        Blog
+                    </span>
+                </a>
+
+                <a class = "active:scale-90" href="{% url 'contact' %}" > 
+                    <span class="hover:text-gray-400 hover:cursor-pointer {% if request.path == '/contact/' %} font-bold text-4xl {% endif %}">
+                        Contact
+                    </span>
+                </a>
+            </div>
+
+        </div>
+
+        <!--Hamburger Icon - show when in mobile view size <md> -->
+            <div class = "text-5xl text-white w-full flex md:hidden flex-row justify-end items-center mr-12">
+                <button @click="mobileMenuIsOpen = !mobileMenuIsOpen" class = "active:scale-90">
+                    <span class="hover:text-gray-400 hover:cursor-pointer"><i class="bi-list"></i></span>
+                </button>
+            </div>
+            
+    </div>    
+
+    <!-- Mobile Menu -->
+	<ul x-cloak x-show="mobileMenuIsOpen" class="fixed max-h-svh overflow-y-auto inset-x-0 top-0 z-10 flex flex-col  text-2xl text-white divide-slate-300 rounded-b-xl bg-sky-950 px-6 pb-6 pt-20 md:hidden">
+		<li class="py-4"><a href="{% url 'index' %}" class="w-full active:scale-95 {% if request.path == '/' %} font-bold text-3xl {% endif %} ">Home</a></li>
+		<li class="py-4"><a href="{% url 'works' %}" class="w-full active:scale-95 {% if request.path == '/works/' %} font-bold text-3xl {% endif %}">Works</a></li>
+        <li class="py-4"><a href="{% url 'blog' %}" class="w-full active:scale-95 {% if request.path == '/blog/' %} font-bold text-3xl {% endif %}">Blog</a></li>
+		<li class="py-4"><a href="{% url 'contact' %}" class="w-full active:scale-95 {% if request.path == '/contact/' %} font-bold text-3xl {% endif %}">Contacts</a></li>
+	</ul> 
+</nav>

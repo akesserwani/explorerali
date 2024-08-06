@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load widget_tweaks %}
+
+<!--Include Navbar-->
+{% include 'shared/nav.html' %}
+
+<!--Page Container-->
+<div class = "flex flex-col w-full h-screen bg-slate-200 overflow-auto">
+    <!--Page Contents-->
+    <div class = "flex flex-col gap-8 p-16">
+        <div>
+            <!--Text with name-->
+            <h1 class = "text-3xl md:text-4xl text-sky-950 font-bold">Works</h1>
+            <!--Divider-->
+            <hr class = "border-2 border-sky-950 w-full mt-4">    
+        </div>
+    
+
+
+        <!--Content Div-->
+        <!--When md+ 2x2, when in mobile view, show list of 1x1-->
+        <div class = "flex flex-row flex-wrap gap-4"
+            x-data="{ projects: [
+            { id: 1, tags: ['Linguistics', 'Tech'], title: 'LinguaBerry', description: 'LinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberry', link: '#' },
+            { id: 2, tags: ['Archaeology', 'Tech'], title: 'Digital Archaeological Atlas', description: 'LinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberry', link: '#' },
+            { id: 3, tags: ['Tech'], title: 'AtlasXplorer', description: 'LinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberry', link: '#' },
+            { id: 4, tags: ['Archaeology', 'Linguistics'], title: 'Evolution of the Arabic Script', description: 'LinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberry', link: '#' },
+            { id: 5, tags: ['Archaeology', 'Linguistics'], title: 'Palmyrene Aramaic Inscriptions', description: 'LinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberry', link: '#' },
+            { id: 6, tags: ['Tech'], title: 'Quickcards', description: 'LinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberry', link: '#' },
+            { id: 7, tags: ['Archaeology', 'Tech', 'Linguistics'], title: 'Explorer Ali Blog', description: 'LinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberry', link: '#' },
+            ]}">
+            <template x-for="project in projects" :key="project.id">
+                <!--Individual Project Entry-->
+                <div class = "flex flex-col w-full md:w-2/5 aspect-square bg-white border border-gray-400 rounded-lg gap-4 p-8">
+                    <!--Title for text-->
+                    <h1 class = "text-sky-950 font-bold text-2xl"  x-text="project.title"></h1>
+                    <!--Container with Tags-->
+                    <div class = "flex flex-row gap-2 flex-wrap">
+                        <!-- Individual tag -->
+                        <template x-for="tag in project.tags" :key="tag">
+                            <div class="px-4 rounded-xl bg-blue-200 border border-blue-400 text-blue-500 text-sm" x-text="tag"></div>
+                        </template>
+                    </div>
+                    <!--Text Description-->
+                    <p class="break-words" x-text="project.description"></p>
+                    <!--Button to visit-->
+                    <a :href="project.link" class="p-2 w-full rounded-lg bg-blue-500 hover:bg-blue-600 active:scale-95 text-white text-base md:text-lg font-semibold text-center block">
+                        Visit Site
+                    </a>
+                </div>
+            </template>
+        </div>
+
+
+    </div>
+    
+</div>
+
+
+{% include 'shared/footer.html' %}
+
+
+{% endblock content %}

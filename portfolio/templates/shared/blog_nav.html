@@ -1,0 +1,25 @@
+<!--Navbar-->
+<nav>
+    <div class = "w-full h-[15vh] flex flex-row align-middle justify-between bg-sky-950 shadow">
+        <!--Navigation items-->
+        <div class = "w-full flex flex-row justify-between text-white p-12">
+            <!--Title-->
+            <a href="{% url 'blog' %}" class = "text-4xl font-bold hover:cursor-pointer">The Blog <span class = "text-lg font-normal hidden md:inline">by Explorer Ali</span>
+            </a>
+            
+            <!--Links on the Right-->
+            <div class = "flex flex-row gap-4 p-2 text-xl">
+                <a class = "active:scale-90" href="{% url 'index' %}" > 
+                    <span class="hover:text-gray-400 hover:cursor-pointer">
+                        Home
+                    </span>
+                </a>
+                <a class = "active:scale-90" href="{% url 'blog_create' %}" > 
+                    <span class="hover:text-gray-400 hover:cursor-pointer">
+                        Create
+                    </span>
+                </a>    
+            </div>
+        </div>
+    </div>
+ </nav>
