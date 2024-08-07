@@ -38,6 +38,7 @@ INTERNAL_IPS = [
 
 INSTALLED_APPS = [
     'portfolio.apps.PortfolioConfig',
+    'users.apps.UsersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -134,5 +135,9 @@ STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+
+LOGIN_REDIRECT_URL = 'blog'
+LOGIN_URL = 'login'
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

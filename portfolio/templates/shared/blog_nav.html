@@ -1,25 +1,64 @@
 <!--Navbar-->
-<nav>
+<nav x-data="{ mobileMenuIsOpen: false }" @click.away="mobileMenuIsOpen = false">
     <div class = "w-full h-[15vh] flex flex-row align-middle justify-between bg-sky-950 shadow">
         <!--Navigation items-->
-        <div class = "w-full flex flex-row justify-between text-white p-12">
+        <div class = "w-full flex flex-row justify-between items-center text-white p-12">
             <!--Title-->
-            <a href="{% url 'blog' %}" class = "text-4xl font-bold hover:cursor-pointer">The Blog <span class = "text-lg font-normal hidden md:inline">by Explorer Ali</span>
+            <a href="{% url 'blog' %}" class = "text-2xl md:text-4xl font-bold hover:cursor-pointer">The Blog <span class = "text-base md:text-lg font-normal">by Explorer Ali</span>
             </a>
             
             <!--Links on the Right-->
-            <div class = "flex flex-row gap-4 p-2 text-xl">
+            <div class = "hidden md:flex flex-row gap-4 p-2 text-xl">
                 <a class = "active:scale-90" href="{% url 'index' %}" > 
-                    <span class="hover:text-gray-400 hover:cursor-pointer">
+                    <span class="hover:text-gray-400 hover:cursor-pointer {% if request.path == '/' %} font-bold text-4xl {% endif %} ">
                         Home
                     </span>
                 </a>
-                <a class = "active:scale-90" href="{% url 'blog_create' %}" > 
-                    <span class="hover:text-gray-400 hover:cursor-pointer">
-                        Create
+                <a class = "active:scale-90" href="{% url 'works' %}" > 
+                    <span class="hover:text-gray-400 hover:cursor-pointer {% if request.path == '/works/' %} font-bold text-4xl {% endif %}">
+                        Works
                     </span>
-                </a>    
+                </a>
+                <a class = "active:scale-90" href="{% url 'contact' %}" > 
+                    <span class="hover:text-gray-400 hover:cursor-pointer {% if request.path == '/contact/' %} font-bold text-4xl {% endif %}">
+                        Contact
+                    </span>
+                </a>
+
+                {% if user.is_authenticated %}
+                    <!--Create button only visible to admin-->
+                    <a class = "active:scale-90" href="{% url 'blog_create' %}" > 
+                        <span class="hover:text-gray-400 hover:cursor-pointer">
+                            Create
+                        </span>
+                    </a>   
+
+                    <!--Logout button only visible to admin-->
+                    <a class = "active:scale-90" href="{% url 'logout' %}" > 
+                        <span class="hover:text-gray-400 hover:cursor-pointer">
+                            Log Out
+                        </span>
+                    </a>   
+                {% endif %}
             </div>
         </div>
-    </div>
+        
+        <!--Hamburger Icon - show when in mobile view size <md> -->
+            <div class = "text-5xl text-white w-full flex md:hidden flex-row justify-end items-center mr-12">
+                <button @click="mobileMenuIsOpen = !mobileMenuIsOpen" class = "active:scale-90">
+                    <span class="hover:text-gray-400 hover:cursor-pointer"><i class="bi-list"></i></span>
+                </button>
+            </div>
+            
+    </div>    
+
+    <!-- Mobile Menu -->
+	<ul x-cloak x-show="mobileMenuIsOpen" class="fixed max-h-svh overflow-y-auto inset-x-0 top-0 z-10 flex flex-col  text-2xl text-white divide-slate-300 rounded-b-xl bg-sky-950 px-6 pb-6 pt-20 md:hidden">
+		<li class="py-4"><a href="{% url 'index' %}" class="w-full active:scale-95 {% if request.path == '/' %} font-bold text-3xl {% endif %} ">Home</a></li>
+		<li class="py-4"><a href="{% url 'works' %}" class="w-full active:scale-95 {% if request.path == '/works/' %} font-bold text-3xl {% endif %}">Works</a></li>
+		<li class="py-4"><a href="{% url 'contact' %}" class="w-full active:scale-95 {% if request.path == '/contact/' %} font-bold text-3xl {% endif %}">Contact</a></li>
+
+        <li class="py-4"><a href="{% url 'blog_create' %}" class="w-full active:scale-95 {% if request.path == '/blog_create/' %} font-bold text-3xl {% endif %}">Create</a></li>
+
+	</ul> 
  </nav>

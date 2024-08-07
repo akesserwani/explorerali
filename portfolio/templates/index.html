@@ -10,34 +10,29 @@
 <!-- Page Container -->
 <div class="min-h-screen flex flex-col">
     <!--Top Page Container for landing page-->
-    <div class = "flex-grow flex justify-center flex-col md:flex-row">
-        <!--Left Box with personal image and headlines-->
-        <div class = "w-full md:w-1/2 h-[85vh] flex flex-col gap-4 items-center justify-center bg-blue-500 border border-blue-500">
+    <!--contains baalbeck image in background with parralax scroll-->
+    <div class="w-full h-[85vh] flex flex-col justify-center items-center relative bg-fixed bg-cover bg-center" style="background-image: url('{% static 'baalbeck.jpg' %}');">
+    
+        <!-- Overlay Content -->
+        <div class="flex flex-col gap-4 items-center justify-center p-4 text-center z-10 h-full bg-black bg-opacity-50">
+            <!-- Profile Image -->
+            <img src="{% static 'cover_photo.jpg' %}" class="w-1/2 md:w-1/4 rounded-full shadow-xl ">
+    
+            <!-- Text with name -->
+            <h1 class="text-4xl text-white font-bold">Ali Kesserwani, BA</h1>
             
-            <!--Profile Image-->
-            <img src="{% static 'cover_photo.jpg' %}" class="w-1/2">
-
-            <!--containter with texts-->
-            <div class = "flex flex-col gap-4 items-center justify-center p-4 text-center">
-                <!--Text with name-->
-                <h1 class = "text-4xl text-white font-bold">Ali Kesserwani, BA</h1>
-                <!--Divider-->
-                <hr class = "border-2 border-sky-950 w-full md:w-3/4">
-                <!--Header Text-->
-                <h2 class = "text-2xl text-white">Masters Student in CS at Georgia Tech</h2>
-
-                <!--Smaller header text-->
-                <h3 class = "text-lg text-white">BA in Computer Science and Anthropology</h3>
-            </div>
-
-        </div>
-        <!--Right Box with image of Temple-->
-        <div class = "w-full md:w-1/2 h-[85vh] hidden md:flex flex-col justify-center align-middle bg-white">
-            <!--Load in image-->
-            <img src="{% static 'baalbeck.jpg' %}" class="object-cover h-full ">
+            <!-- Divider -->
+            <hr class="border-2 border-white w-full md:w-3/4">
+            
+            <!-- Header Text -->
+            <h2 class="text-2xl text-white">Masters Student in CS at Georgia Tech</h2>
+            
+            <!-- Smaller header text -->
+            <h3 class="text-lg text-white">BA in Computer Science and Anthropology</h3>
         </div>
 
     </div>
+    
 
     <!--Next Container for About page-->
     <div class = "flex-grow flex justify-center flex-col md:flex-row bg-slate-200">
