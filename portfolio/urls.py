@@ -13,4 +13,6 @@ urlpatterns = [
 
     path('blog/edit/<str:story_name>', views.edit, name = "blog_edit"),
 
+    path('like/<str:story_name>', views.likeStory, name = "like_story"),
+
 ]

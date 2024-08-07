@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from users.forms import ContactForm, BlogStoryForm
+from portfolio.forms import ContactForm, BlogStoryForm
 from .models import BlogStory
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -115,3 +115,19 @@ def edit(request, story_name):
     }
 
     return render(request, 'blog_crud/edit_blog.html', context)
+
+
+#Like story button
+def likeStory(request, story_name):
+    if request.method == "POST":
+        blog_story = BlogStory.objects.get(title = story_name)
+
+
+        #increment blog stories
+        blog_story.likes += 1
+        #save is liked to cookies
+        is_liked = True  
+        blog_story.save()
+
+        # Render a partial HTML snippet with updated content
+        return render(request, 'components/like_button.html', {'blog_story': blog_story, 'is_liked': is_liked})

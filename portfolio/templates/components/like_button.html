@@ -1,0 +1,9 @@
+<div id="like-container" class = "flex flex-row gap-2 text-gray-400 text-xl">
+    <form hx-post="{% url 'like_story' story_name=blog_story.title %}" hx-target="#like-container" hx-swap="innerHTML">
+        {% csrf_token %}
+        <button type="submit" class="active:scale-90">
+            <i id="like-icon" class="bi {% if is_liked %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+        </button>
+    </form>
+    <span id="like-count">{{ blog_story.likes }}</span>
+</div>
