@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
-from portfolio.forms import ContactForm, BlogStoryForm
-from .models import BlogStory
+from portfolio.forms import ContactForm, BlogStoryForm, CommentForm
+from .models import BlogStory, Comment
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 # Create your views here.
 def index(response):
@@ -36,12 +37,50 @@ def story(response, story_name):
 
     #get data from story based on story_name
     blog_story = BlogStory.objects.get(title = story_name)
+
+    #Post request to send model form
+    comment_form = CommentForm()
+
     #send to the view
     context = {
-        'blog_story': blog_story
+        'blog_story': blog_story,
+        'comment_form': comment_form
     }
 
     return render(response, 'blog_crud/story_blog.html', context)
+
+
+#function to post comment in story()
+def create_comment(request, story_name):
+    if request.method == 'POST':
+        blog_story = BlogStory.objects.get(title = story_name)
+        form = CommentForm(request.POST)
+
+        if form.is_valid():
+            # Save the comment to the database
+            comment = form.save(commit=False)
+            comment.blog_story = blog_story
+            comment.save()
+
+            # Render the updated comments section
+            return render(request, 'components/comment_section.html', {'blog_story': blog_story})
+
+
+
+
+#function to delete comment
+def delete_comment(request, story_name, comment_id):
+
+    #get blog story
+    blog_story = BlogStory.objects.get(title = story_name)
+    #get certain comment
+    comment = Comment.objects.get(id = comment_id, blog_story=blog_story)
+
+    # Delete the comment
+    comment.delete()
+
+    #return successful json response
+    return render(request, 'components/comment_section.html', {'blog_story': blog_story})
 
 
 
@@ -118,15 +157,18 @@ def edit(request, story_name):
 
 
 #Like story button
-def likeStory(request, story_name):
-    if request.method == "POST":
-        blog_story = BlogStory.objects.get(title = story_name)
 
+def likeStory(request, story_name):
+
+    if request.method == "POST":
+        
+        blog_story = BlogStory.objects.get(title = story_name)
 
         #increment blog stories
         blog_story.likes += 1
         #save is liked to cookies
         is_liked = True  
+
         blog_story.save()
 
         # Render a partial HTML snippet with updated content

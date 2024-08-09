@@ -15,4 +15,8 @@ urlpatterns = [
 
     path('like/<str:story_name>', views.likeStory, name = "like_story"),
 
+    #crud functionalities for deleting and updating comments
+    path('comment/<str:story_name>', views.create_comment, name = "post_comment"),
+    path('comment/<str:story_name>/delete/<int:comment_id>/', views.delete_comment, name='delete_comment'),
+
 ]

@@ -1,0 +1,41 @@
+
+<!--Comment Section-->
+<div id = "comment_section" class = "flex flex-col gap-8 w-full">
+    <h1 class = "text-2xl font-bold text-sky-950">{{blog_story.comments.count}} Comments</h1>
+
+    {% for comment in blog_story.comments.all %}
+    <!--Comment Container-->
+    <div class="flex flex-col gap-2">
+        <!--Name of person and delete button (only visible to admin)-->
+        <div class = "flex flex-row gap-4 justify-between">
+            <h1 class = "text-xl font-bold text-sky-950">{{comment.name}}</h1>
+
+            <!--Delete button-->
+            <!--Only render for admin-->
+            {% if user.is_authenticated %}
+                <button hx-delete="{% url 'delete_comment' story_name=blog_story.title comment_id=comment.id %}" 
+                hx-target="#comment_section" 
+                class = "text-base text-red-500 hover:text-red-800" 
+                hx-confirm="Are you sure you want to delete?">
+                Delete
+                </button>
+            {% endif%}
+        </div>
+        <!--Date of comment-->
+        <h3 class = "text-sm text-gray-400">{{ comment.created_date }}</h3>
+
+        <!--The Comment-->
+        <h3 class = "text-base text-sky-950">{{ comment.comment }}</h3>
+
+        <hr class = "border border-gray-200">
+    </div>
+
+    <!--Comment Container End-->
+    {% empty %}
+    <br>
+    <p class = "text-center text-gray-400 text-xl">No comments yet. Be the first to comment!</p>
+    <br>
+    {% endfor %}
+    
+
+</div>

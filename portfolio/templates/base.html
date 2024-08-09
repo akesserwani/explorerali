@@ -56,6 +56,11 @@
       alert_div.parentNode.removeChild(alert_div);
     }
 
+    //for CSRF tokens
+    document.body.addEventListener('htmx:configRequest', (event) => {
+        event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+    })
+
   </script>
 
 

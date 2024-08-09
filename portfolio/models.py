@@ -16,7 +16,13 @@ class BlogStory(models.Model):
     def __str__(self):
         return self.title 
 
-# Tags in future
-# Comments in future
+class Comment(models.Model):
+    blog_story = models.ForeignKey(BlogStory, related_name='comments', on_delete=models.CASCADE)
+    name = models.CharField(max_length=50) 
+    email = models.CharField(max_length=50, blank=True) 
+    comment = models.TextField()
+    created_date = models.DateTimeField(default=now)
 
+    def __str__(self):
+        return self.author_name
 

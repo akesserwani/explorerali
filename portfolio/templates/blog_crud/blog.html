@@ -2,6 +2,9 @@
 
 {% block content %}
 
+{% load static %} 
+
+
 {% load widget_tweaks %}
 
 <!--Include Navbar-->
@@ -41,7 +44,7 @@
             <div class = "flex flex-col w-full md:w-2/5 h-[35rem] bg-white border border-gray-300 rounded-xl shadow-md">
                 <!--Blog Post Image-->
                 <div class="w-full h-1/2 border rounded-t-xl overflow-hidden">
-                    <img src="https://linguaberry.com/assets/landing_image-C6kAri7M.png" class="w-full h-full object-cover">
+                    <img src="{% static 'blog_covers/' %}{{ blog.imageUrl }}" class="w-full h-full object-cover">
                 </div>
             
                 <!--Top row box with tags, date, and time to read-->

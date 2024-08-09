@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import TextInput, EmailInput, PasswordInput, ModelForm
-from portfolio.models import BlogStory
+from portfolio.models import BlogStory, Comment
 from ckeditor.widgets import CKEditorWidget
 
 
@@ -20,3 +20,12 @@ class BlogStoryForm(forms.ModelForm):
     class Meta:
         model = BlogStory
         fields = ['title', 'caption', 'story', 'imageUrl']
+
+class CommentForm(forms.ModelForm):
+    name = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Enter your name"}))
+    email = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Enter your email (optional)"}), required=False)
+    comment = forms.CharField(widget=forms.Textarea(attrs={"placeholder": "Your Comment"}))
+
+    class Meta:
+        model = Comment
+        fields = ['name', 'email', 'comment']
