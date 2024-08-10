@@ -16,7 +16,6 @@ class BlogStoryForm(forms.ModelForm):
     story = forms.CharField(widget=CKEditorWidget())
     imageUrl = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Enter Image Url"}))
 
-
     class Meta:
         model = BlogStory
         fields = ['title', 'caption', 'story', 'imageUrl']

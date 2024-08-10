@@ -4,6 +4,10 @@ from .models import BlogStory, Comment
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from portfolio.templatetags.functions import calculateReadTime
+from django.core.mail import send_mail
+from django.conf import settings
+from django.http import HttpResponse
 
 # Create your views here.
 def index(response):
@@ -12,13 +16,21 @@ def index(response):
 def works(response):
     return render(response, 'works.html')
 
-def contact(response):
+def contact(request):
+
+    #send email form
     form = ContactForm()
+	# if request.method == 'POST':
+    #     message = request.POST['message']
+	# 	send_mail('Contact Form', message, settings.EMAIL_HOST_USER, ['ivanovsin11@gmail.com'], fail_silently=False)
+
 
     context = {
         'form': form
     }
-    return render(response, 'contact.html', context)
+    return render(request, 'contact.html', context)
+
+
 
 def blog(response):
 
@@ -32,7 +44,7 @@ def blog(response):
     return render(response, 'blog_crud/blog.html', context)
 
 
-#Function to open Certain Blog Story
+#Function to open Blog Story Template
 def story(response, story_name):
 
     #get data from story based on story_name
@@ -50,44 +62,13 @@ def story(response, story_name):
     return render(response, 'blog_crud/story_blog.html', context)
 
 
-#function to post comment in story()
-def create_comment(request, story_name):
-    if request.method == 'POST':
-        blog_story = BlogStory.objects.get(title = story_name)
-        form = CommentForm(request.POST)
-
-        if form.is_valid():
-            # Save the comment to the database
-            comment = form.save(commit=False)
-            comment.blog_story = blog_story
-            comment.save()
-
-            # Render the updated comments section
-            return render(request, 'components/comment_section.html', {'blog_story': blog_story})
-
-
-
-
-#function to delete comment
-def delete_comment(request, story_name, comment_id):
-
-    #get blog story
-    blog_story = BlogStory.objects.get(title = story_name)
-    #get certain comment
-    comment = Comment.objects.get(id = comment_id, blog_story=blog_story)
-
-    # Delete the comment
-    comment.delete()
-
-    #return successful json response
-    return render(request, 'components/comment_section.html', {'blog_story': blog_story})
-
-
 
 #Function to Create Blog Story
 @login_required
 def create(response):
+    
     form = BlogStoryForm()
+
     #create new map
     if response.method == "POST":
         form = BlogStoryForm(response.POST)
@@ -173,3 +154,38 @@ def likeStory(request, story_name):
 
         # Render a partial HTML snippet with updated content
         return render(request, 'components/like_button.html', {'blog_story': blog_story, 'is_liked': is_liked})
+
+
+#function to post comment in story()
+def create_comment(request, story_name):
+    if request.method == 'POST':
+        blog_story = BlogStory.objects.get(title = story_name)
+        form = CommentForm(request.POST)
+
+        if form.is_valid():
+            # Save the comment to the database
+            comment = form.save(commit=False)
+            comment.blog_story = blog_story
+            comment.save()
+
+            # Render the updated comments section
+            return render(request, 'components/comment_section.html', {'blog_story': blog_story})
+
+
+
+
+#function to delete comment
+def delete_comment(request, story_name, comment_id):
+
+    #get blog story
+    blog_story = BlogStory.objects.get(title = story_name)
+    #get certain comment
+    comment = Comment.objects.get(id = comment_id, blog_story=blog_story)
+
+    # Delete the comment
+    comment.delete()
+
+    #return successful json response
+    return render(request, 'components/comment_section.html', {'blog_story': blog_story})
+
+

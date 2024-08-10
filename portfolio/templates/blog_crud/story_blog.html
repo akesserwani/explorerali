@@ -4,6 +4,8 @@
 
 {% load static %} 
 
+{% load functions %}
+
 {% load widget_tweaks %}
 
 <!--Include Navbar-->
@@ -42,7 +44,7 @@
                     <!--Date: January, 1, 2024 -->
                     <p>{{ blog_story.created_date|date:"F j, o" }}</p>
                     <p>•</p>
-                    <p>5 min read</p>
+                    <p>{{ blog_story.story | calculateReadTime }} min read</p>
                 </div>
             </div>
 

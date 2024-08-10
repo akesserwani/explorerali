@@ -24,30 +24,33 @@
         <!--When md+ 2x2, when in mobile view, show list of 1x1-->
         <div class = "flex flex-row flex-wrap gap-4"
             x-data="{ projects: [
-            { id: 1, tags: ['Linguistics', 'Tech'], title: 'LinguaBerry', description: 'LinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberry', link: '#' },
-            { id: 2, tags: ['Archaeology', 'Tech'], title: 'Digital Archaeological Atlas', description: 'LinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberry', link: '#' },
-            { id: 3, tags: ['Tech'], title: 'AtlasXplorer', description: 'LinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberry', link: '#' },
-            { id: 4, tags: ['Archaeology', 'Linguistics'], title: 'Evolution of the Arabic Script', description: 'LinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberry', link: '#' },
-            { id: 5, tags: ['Archaeology', 'Linguistics'], title: 'Palmyrene Aramaic Inscriptions', description: 'LinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberry', link: '#' },
-            { id: 6, tags: ['Tech'], title: 'Quickcards', description: 'LinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberry', link: '#' },
-            { id: 7, tags: ['Archaeology', 'Tech', 'Linguistics'], title: 'Explorer Ali Blog', description: 'LinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberryLinguaberry', link: '#' },
+            { id: 1, tags: ['Linguistics', 'Tech'], title: 'LinguaBerry', description: 'Linguaberry is a language-learning app designed to combine various aspects of language learning into a single platform, using AI to generate accurate data for the languages it supports. Linguaberry aims to fill a gap in language-learning resources by providing content for intermediate to advanced language learners, unlike many other apps that focus primarily on beginners', link: 'http://linguaberry.com' },
+            { id: 2, tags: ['Archaeology', 'Tech'], title: 'Digital Archaeological Atlas', description: 'The Digital Archaeological Atlas, also called Digital Archaeological Atlas of the Classical East, is an interactive database that tracks lost, known, and potential classical archaeological sites in the Middle East. Built with Ruby on Rails, the website features an interactive map and categorizes archaeological sites as potential, active and regulated, or abandoned.', link: 'https://github.com/akesserwani/DAACE' },
+            { id: 3, tags: ['Tech'], title: 'AtlasXplorer', description: '', link: 'AtlasXplorer is a social media site in which users can create and share maps with geographic points. The social media site can be applied in the fields of archaeology, travel, tourism, and general geo-spatial sciences.', link: 'https://atlasxplorer.onrender.com/' },
+            { id: 4, tags: ['Archaeology', 'Linguistics'], title: 'Evolution of the Arabic Script', description: '', link: '#' },
+            { id: 5, tags: ['Archaeology', 'Linguistics'], title: 'Palmyrene Aramaic Inscriptions', description: 'Coming Soon', link: '#' },
+            { id: 6, tags: ['Tech'], title: 'Quickcards', description: '', link: '#' },
+            { id: 7, tags: ['Archaeology', 'Tech', 'Linguistics'], title: 'Explorer Ali Blog', description: '', link: '#' },
             ]}">
             <template x-for="project in projects" :key="project.id">
                 <!--Individual Project Entry-->
-                <div class = "flex flex-col w-full md:w-2/5 aspect-square bg-white border border-gray-400 rounded-lg gap-4 p-8">
+                <div class = "flex flex-col justify-between w-full md:w-2/5 aspect-square bg-white border border-gray-400 rounded-lg p-8">
                     <!--Title for text-->
-                    <h1 class = "text-sky-950 font-bold text-2xl"  x-text="project.title"></h1>
-                    <!--Container with Tags-->
-                    <div class = "flex flex-row gap-2 flex-wrap">
-                        <!-- Individual tag -->
-                        <template x-for="tag in project.tags" :key="tag">
-                            <div class="px-4 rounded-xl bg-blue-200 border border-blue-400 text-blue-500 text-sm" x-text="tag"></div>
-                        </template>
+                    <div class = "flex flex-col gap-4">
+                        <h1 class = "text-sky-950 font-bold text-2xl"  x-text="project.title"></h1>
+                        <!--Container with Tags-->
+                        <div class = "flex flex-row gap-2 flex-wrap">
+                            <!-- Individual tag -->
+                            <template x-for="tag in project.tags" :key="tag">
+                                <div class="px-4 rounded-xl bg-blue-200 border border-blue-400 text-blue-500 text-sm" x-text="tag"></div>
+                            </template>
+                        </div>
+                        <!--Text Description-->
+                        <p class="break-words" x-text="project.description"></p>
                     </div>
-                    <!--Text Description-->
-                    <p class="break-words" x-text="project.description"></p>
+                    <br>
                     <!--Button to visit-->
-                    <a :href="project.link" class="p-2 w-full rounded-lg bg-blue-500 hover:bg-blue-600 active:scale-95 text-white text-base md:text-lg font-semibold text-center block">
+                    <a :href="project.link" target="_blank" class="p-2 w-full rounded-lg bg-blue-500 hover:bg-blue-600 active:scale-95 text-white text-base md:text-lg font-semibold text-center block">
                         Visit Site
                     </a>
                 </div>
