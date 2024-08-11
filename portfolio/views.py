@@ -9,6 +9,10 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.http import HttpResponse
 
+from portfolio.serializers import BlogSerializer
+import json 
+
+
 # Create your views here.
 def index(response):
     return render(response, 'index.html')
@@ -36,9 +40,10 @@ def blog(response):
 
     #print contents of database
     blog_stories = BlogStory.objects.all()
-
+    blog_stories_json = BlogSerializer(blog_stories, many=True).data
+    
     context = {
-        'blog_stories': blog_stories
+        'blog_stories': json.dumps(blog_stories_json)
     }
 
     return render(response, 'blog_crud/blog.html', context)

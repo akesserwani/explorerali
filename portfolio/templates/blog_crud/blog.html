@@ -19,76 +19,109 @@
 
 <!--Container with the blog posts and tags-->
 <!--Top Page Container for landing page-->
-<div class = "flex flex-col gap-6 bg-slate-200 w-full p-16">
+<div id = "blog_catalog" class = "flex flex-col gap-6 bg-slate-200 w-full p-16">
 
     <!--Filter tab buttons-->
-   <!-- <div class="flex flex-row flex-wrap gap-4"
-        x-data="{ tabs: [
-            { id: 1, text: 'Featured' },
-            { id: 2, text: 'Newest' },
-            { id: 3, text: 'Tech' },
-            { id: 4, text: 'Linguistics' },
-            { id: 5, text: 'Anthropology' },
-        ]}">
+   <div class="flex flex-row flex-wrap gap-4"
+        x-data="{ 
+            filter: 'All', 
+            tabs: [
+                { id: 1, text: 'All' },
+                { id: 2, text: 'Featured' },
+                { id: 3, text: 'Newest' },
+                { id: 4, text: 'Tech' },
+                { id: 5, text: 'Linguistics' },
+                { id: 6, text: 'Archaeology' },
+            ]}">
+
         <template x-for="tab in tabs" :key="tab.id">
-            <button class="px-4 py-1 rounded-2xl bg-blue-500 hover:bg-blue-600 border border-blue-400 active:scale-95 text-white text-sm"
-                x-text="tab.text">
-            </button>
+            <!--Form Button submits htmx request to filter-->
+                <button class="px-4 py-1 rounded-2xl   active:scale-95 text-sky-950 text-sm"
+                        :class="{ 'bg-blue-400 text-white': filter === tab.text, 'bg-slate-300 hover:bg-slate-400': filter !== tab.text }"
+                        x-text="tab.text"
+                        @click="filter = tab.text">
+                </button>
         </template>
-    </div> -->
+    </div>
 
-    <div class = "flex flex-row flex-wrap gap-4">
+    <hr class = "border border-gray-300">
+    <div class = "flex flex-row flex-wrap gap-4" x-data="{ blog_stories: {{ blog_stories }} }">
 
-        <!--Implement logic here to loop through blog posts and insert the data-->
-        {% for blog in blog_stories.all %}
+        <!--Load JSON data into the alpine object-->
+        <template x-for="blog in blog_stories">
             <!--Individual Blog Post-->
             <div class = "flex flex-col w-full md:w-2/5 h-[35rem] bg-white border border-gray-300 rounded-xl shadow-md">
                 <!--Blog Post Image-->
                 <div class="w-full h-1/2 border rounded-t-xl overflow-hidden">
-                    <img src="{% static 'blog_covers/' %}{{ blog.imageUrl }}" class="w-full h-full object-cover">
+                    <img :src="`/static/blog_covers/${blog.imageUrl}`"class="w-full h-full object-cover">
                 </div>
             
                 <!--Top row box with tags, date, and time to read-->
                 <div class = "flex flex-row justify-between p-8 flex-wrap gap-4">
                     <!--Tag-->
-                    <!-- <div class="px-4 rounded-xl bg-blue-200 border border-blue-400 text-blue-500 text-xs md:text-sm">Archaeology</div> -->
+                    <div class="px-4 rounded-xl bg-blue-200  text-blue-500 text-xs md:text-sm">Archaeology</div>
 
                     <!--Date, time to read-->
                     <div class = "flex flex-row gap-1 md:gap-2 text-gray-400 text-xs md:text-sm">
-                        <p>{{ blog.created_date|date:"F j, o" }}</p>
+                        <p x-text="formatDate(blog.created_date)"></p>
                         <p>•</p>
-                        <p>{{ blog.story | calculateReadTime }} min read</p>
+                        <p x-text="`${calculateReadTime(blog.story)} min read`"></p>
                     </div>
                 </div>
 
                 <!--Box with text for title and description-->
                 <div class = "pl-8 h-1/2">
                     <!--Title Text-->
-                    <h1 class = "text-3xl font-bold text-black">{{ blog.title }}</h1>
+                    <h1 class = "text-3xl font-bold text-black" x-text ="blog.title"></h1>
                     <!--Description text-->
-                    <p class = "text-lg mt-4">{{ blog.caption }}</p>
+                    <p class = "text-lg mt-4" x-text ="blog.caption"></p>
                 </div>
                 <!--Bottom Box row with click button and likes-->
                 <div class = "flex flex-row justify-between p-8">
                     <!--Read Story Button-->
-                    <a href = "{% url 'blog_story' story_name=blog.title %}" class="p-2 w-1/2 md:w-1/3 rounded-lg bg-blue-500 hover:bg-blue-600 active:scale-95 text-white text-base text-center">
+                    <a :href="`/blog/story/${blog.title}`"  class="p-2 w-1/2 md:w-1/3 rounded-lg bg-blue-500 hover:bg-blue-600 active:scale-95 text-white text-base text-center">
                         Read Story
                     </a>
 
                     <!--Number of likes-->
                     <div class = "flex flex-row gap-2 text-gray-400 text-xl mt-2 mr-6">
                         <i class="bi bi-heart-fill"></i>
-                        <p>{{blog.likes}}</p>
+                        <p x-text ="blog.likes"></p>
                     </div>
                 </div>
             </div>
-        {% endfor %}
-
+        </template>
+        
     </div>
     
 
 </div>
 
+<script>
+
+//function to calculate read time
+function calculateReadTime(story) {
+    // Assuming an average reading speed of 200 words per minute
+    const wordsPerMinute = 200;
+    const words = story.split(/\s+/).length;
+    return Math.ceil(words / wordsPerMinute);
+}
+
+// Function to format the date string
+function formatDate(dateString) {
+    const date = new Date(dateString);
+
+    // Format the date to "Month Day, Year"
+    const formattedDate = date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+
+    return formattedDate;
+}
+
+</script>
 
 {% include 'shared/footer.html' %}
 
