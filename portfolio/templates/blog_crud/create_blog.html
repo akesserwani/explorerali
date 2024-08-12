@@ -31,16 +31,31 @@
                 <!--Horizontal Div with label and word count-->
                 <div class = "flex flex-row justify-between">
                     <h1 class = "text-lg text-blue-950 font-bold">Story:</h1>
-                    <h1 class = "text-lg text-blue-950"><b>Word Count:</b> <span id = "word_count"></span></h1>
+                    <h1 class = "text-lg text-blue-950"><b>Word Count:</b> <span id = "word_count">0</span></h1>
                 </div>
                 {% render_field form.media %}
                 {% render_field form.story %}
            </div>
+
+           <!--Button to donwload text contents-->
+           <div class = "flex flex-row items-end w-full">
+                <button onclick="downloadEditorContent()" class="ml-auto active:scale-95 w-full md:w-1/4 h-10 rounded-lg border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 text-base">
+                    Download Text File
+                </button>
+           </div>
+
             <!--Enter image url-->
            <div class = "flex flex-col gap-4">
                 <h1 class = "text-lg text-blue-950 font-bold">Image URL:</h1>
                 {% render_field form.imageUrl class="border-gray-300 border-2 rounded-lg w-full py-4 bg-white text-gray-600 focus:outline-none focus:shadow-outline" %}
             </div>
+
+            <!--Enter Tags-->
+            <div class = "flex flex-col gap-4">
+                <h1 class = "text-lg text-blue-950 font-bold">Tags (seperate by comma):</h1>
+                {% render_field form.tags class="border-gray-300 border-2 rounded-lg w-full py-4 bg-white text-gray-600 focus:outline-none focus:shadow-outline" %}
+            </div>
+    
     
             <!--Submit Button-->
             <button type="submit" class="active:scale-95 w-full h-12 rounded-lg border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 transition-all text-lg">
@@ -51,5 +66,62 @@
     </div>    
 </div>
 
+<script>
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Access the CKEditor instance
+        const editor = CKEDITOR.instances['id_story'];
+
+        // Attach a 'change' event listener to capture updates
+        editor.on('change', function() {
+            const content = editor.getData();
+
+            // Remove <br> tags by replacing them with spaces
+            const textContent = content.replace(/<br\s*\/?>/gi, ' ');
+
+            // Remove all other HTML tags
+            const plainText = textContent.replace(/<\/?[^>]+(>|$)/g, ' ');
+
+            // Normalize spaces and calculate word count
+            const wordCount = plainText
+                .trim()                     // Remove leading and trailing whitespace
+                .replace(/\s+/g, ' ')       // Replace multiple spaces with a single space
+                .split(' ')                 // Split based on single spaces
+                .filter(word => word.length > 0) // Filter out any empty strings
+                .length;                    // Count the number of words
+
+            document.getElementById("word_count").innerHTML = wordCount;
+        });
+
+        // Function to download the CKEditor content as a text file
+        window.downloadEditorContent = function() {
+            // Access the CKEditor instance
+            const editor = CKEDITOR.instances['id_story'];
+
+            // Get the content from the editor
+            const content = editor.getData();
+
+            // Create a Blob from the plain text
+            const blob = new Blob([content], { type: 'text/plain' });
+
+            // Create a download link
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'editor-content.txt'; 
+
+            // Append the link to the document, click it, and remove it
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            // Revoke the object URL after download
+            URL.revokeObjectURL(link.href);
+        };
+
+
+    });
+
+</script>
 
 {% endblock content %}

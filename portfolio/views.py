@@ -82,8 +82,9 @@ def create(response):
             caption = form.cleaned_data['caption']
             story = form.cleaned_data['story']
             imageUrl = form.cleaned_data['imageUrl']
+            tags = form.cleaned_data['tags']
 
-            new_story = BlogStory(title=title, caption=caption, story=story, imageUrl=imageUrl)    
+            new_story = BlogStory(title=title, caption=caption, story=story, imageUrl=imageUrl, tags=tags)    
             new_story.save()        
 
             messages.success(response, 'Story has been created!')

@@ -19,19 +19,18 @@
 
 <!--Container with the blog posts and tags-->
 <!--Top Page Container for landing page-->
-<div id = "blog_catalog" class = "flex flex-col gap-6 bg-slate-200 w-full p-16">
+<div id = "blog_catalog" class = "flex flex-col gap-6 bg-slate-200 w-full p-16"
+x-data="{ filter: 'All' }">
 
     <!--Filter tab buttons-->
    <div class="flex flex-row flex-wrap gap-4"
         x-data="{ 
-            filter: 'All', 
             tabs: [
                 { id: 1, text: 'All' },
-                { id: 2, text: 'Featured' },
-                { id: 3, text: 'Newest' },
-                { id: 4, text: 'Tech' },
-                { id: 5, text: 'Linguistics' },
-                { id: 6, text: 'Archaeology' },
+                { id: 2, text: 'Popular' },
+                { id: 3, text: 'Tech' },
+                { id: 4, text: 'Linguistics' },
+                { id: 5, text: 'Archaeology' },
             ]}">
 
         <template x-for="tab in tabs" :key="tab.id">
@@ -45,21 +44,44 @@
     </div>
 
     <hr class = "border border-gray-300">
-    <div class = "flex flex-row flex-wrap gap-4" x-data="{ blog_stories: {{ blog_stories }} }">
-
+    <div class = "flex flex-row flex-wrap gap-4 min-h-96"
+     x-data="{ blog_stories: {{ blog_stories }},
+                get filteredStories() {
+                    if (this.filter === 'All'){
+                        return this.blog_stories;
+                    } else if (this.filter === 'Popular') {
+                        return this.blog_stories.slice().sort((a, b) => {
+                            return b.likes - a.likes;
+                        });
+                    }
+                    return this.blog_stories.filter(blog => {
+                        //Split the springs from the tags to get each individual one
+                        const tagsArray = blog.tags.split(',');
+                        // Trim whitespace from each tag in the array
+                        const trimmedTagsArray = tagsArray.map(tag => tag.trim());
+                        // Check if the filter is included in the trimmed array of tags
+                        const isFilterIncluded = trimmedTagsArray.includes(this.filter);
+                        return isFilterIncluded
+                    });
+                }
+            }">
         <!--Load JSON data into the alpine object-->
-        <template x-for="blog in blog_stories">
+        <!--filter stories based on tags-->
+        <template x-for="blog in filteredStories" >
             <!--Individual Blog Post-->
             <div class = "flex flex-col w-full md:w-2/5 h-[35rem] bg-white border border-gray-300 rounded-xl shadow-md">
                 <!--Blog Post Image-->
                 <div class="w-full h-1/2 border rounded-t-xl overflow-hidden">
                     <img :src="`/static/blog_covers/${blog.imageUrl}`"class="w-full h-full object-cover">
                 </div>
-            
                 <!--Top row box with tags, date, and time to read-->
                 <div class = "flex flex-row justify-between p-8 flex-wrap gap-4">
-                    <!--Tag-->
-                    <div class="px-4 rounded-xl bg-blue-200  text-blue-500 text-xs md:text-sm">Archaeology</div>
+                    <!--Tag Container-->
+                    <div class = "flex flex-row gap-2 w-full flex-wrap">
+                         <template x-for="tag in blog.tags.split(',')">
+                            <div class="px-4 rounded-xl bg-blue-200  text-blue-500 text-xs md:text-sm" x-text="tag"></div>
+                        </template>    
+                    </div>
 
                     <!--Date, time to read-->
                     <div class = "flex flex-row gap-1 md:gap-2 text-gray-400 text-xs md:text-sm">
@@ -91,7 +113,6 @@
                 </div>
             </div>
         </template>
-        
     </div>
     
 

@@ -15,10 +15,11 @@ class BlogStoryForm(forms.ModelForm):
     caption = forms.CharField(widget=forms.Textarea(attrs={"placeholder": "Enter Story Caption"}))
     story = forms.CharField(widget=CKEditorWidget())
     imageUrl = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Enter Image Url"}))
+    tags = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Enter Tags"}))
 
     class Meta:
         model = BlogStory
-        fields = ['title', 'caption', 'story', 'imageUrl']
+        fields = ['title', 'caption', 'story', 'imageUrl', 'tags']
 
 class CommentForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Enter your name"}))
